@@ -199,16 +199,26 @@ class MockFileBoxes:
                     assert False
             self.data = dict()
             for key in list_data:
+                found = False
                 for d in dat:
                     if key in d:
                         self.data[key] = d[key]
+                        found = True
                         break
-                assert key in self.data
+                if not found:
+                    print(f"Warning: key '{key}' not found in any input file. Filling with empty array.")
+                    self.data[key] = np.array([])
             del dat
         else:
             dat = np.load(fileboxes, allow_pickle=True)
-            self.data = {key: dat[key] for key in list_data}
-            self.image_inds = dat['image_inds']
+            self.data = {}
+            for key in list_data:
+                if key in dat:
+                    self.data[key] = dat[key]
+                else:
+                    print(f"Warning: key '{key}' not found in {fileboxes}. Filling with empty array.")
+                    self.data[key] = np.array([])
+            self.image_inds = dat['image_inds'] if 'image_inds' in dat else np.array([])
             del dat
 
     def reset(self):

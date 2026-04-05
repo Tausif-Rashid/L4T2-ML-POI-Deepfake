@@ -5,4 +5,4 @@ python main_gen_references.py --dir_videos /home/tr/MEGA/programming2/L4T2/ML_pr
 python main_gen_ref_complete.py --dir_videos /home/tr/MEGA/programming2/L4T2/ML_prj_part2_v2/input/sust_ref/ --dir_poi /home/tr/MEGA/programming2/L4T2/ML_prj_part2_v2/pois/sust_s1/
 
 Kaggle
-python main_gen_ref_complete.py --dir_videos /kaggle/input/datasets/tausifr/input-vids/input/sust_ref --dir_poi /kaggle/input/datasets/tausifr/input-vids/input/sust_ref
+python /tmp/script.py --dir_videos /kaggle/input/datasets/tausifr/input-vid2 --dir_poi /kaggle/working/masud --resources_path /kaggle/input/datasets/tausifr/poi-models/resources/

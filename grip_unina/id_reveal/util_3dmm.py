@@ -8,7 +8,8 @@
 # (included in this package) and online at
 # http://www.grip.unina.it/download/LICENSE_OPEN.txt
 #
-
+import sys
+sys.path.append('/kaggle/input/datasets/tausifr/pythonlib-folder/pythonlib/')
 
 import numpy as np
 import torch

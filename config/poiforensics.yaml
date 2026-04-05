@@ -1,0 +1,13 @@
+model:
+  type: poi_forensics
+  architecture_audio: enc_resnet50
+  architecture_video: enc_resnet50
+  factor_len: 1
+  feats_len: 256
+  face_size: 224
+  clip_length: 75
+  clip_video_stride: 3
+  clip_stride: 25
+  clip_ref_stride: 25
+  weights: ./weights_audiovideo.th
+

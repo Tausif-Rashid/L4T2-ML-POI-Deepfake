@@ -1,0 +1,5 @@
+model:
+  type: id_reveal
+  clip_length: 100
+  clip_stride: 50
+  clip_ref_stride: 1

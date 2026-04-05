@@ -1,0 +1,12 @@
+PyYAML>=5.1
+pillow>=7.2.0
+librosa==0.9.2
+segmentation-models-pytorch==0.2.1
+pydub==0.25.1
+scikit-image==0.17.2
+scikit-video==1.1.11
+efficientnet-pytorch==0.6.3
+albumentations==0.4.5
+opencv-python-headless==4.5.3.56
+tqdm==4.46.0
+yt-dlp

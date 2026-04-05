@@ -1,0 +1,12 @@
+audio:
+  norm_target_dBFS: -30
+  num_fft: 512
+  sampling_rate: 16000
+  window_length: 25
+  window_step: 10
+fps: 25
+model:
+  clip_length: 100
+  clip_ref_stride: 1
+  clip_stride: 50
+  type: id_reveal

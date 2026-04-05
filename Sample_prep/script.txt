@@ -1,0 +1,19 @@
+#For Creating video input from wav files
+ffmpeg -f concat -safe 0 -i <(for f in *.wav; do echo "file '$PWD/$f'"; done) -f lavfi -t $(sox --i -D *.wav | awk '{s+=$1} END {print s}') -i color=c=black:s=1280x720:r=25 -shortest -c:v libx264 -c:a aac output.mp4
+# Version 2
+for f in *.wav; do echo "file '$PWD/$f'"; done > wavs.txt
+ffmpeg -f concat -safe 0 -i wavs.txt -c copy all_audio.wav
+ffmpeg -f lavfi -i color=c=black:s=1280x720:r=25:d=$DUR -i all_audio.wav -shortest -c:v libx264 -c:a aac output.mp4
+
+
+#Version 3
+# 1. Create file list
+for f in *.wav; do echo "file '$PWD/$f'"; done > wavs.txt
+# 2. Concatenate audio
+ffmpeg -f concat -safe 0 -i wavs.txt -c copy all_audio.wav
+# 3. Get duration
+DUR=$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 all_audio.wav)
+echo $DUR  # Should print a number
+# 4. Create video
+ffmpeg -f lavfi -i color=c=black:s=1280x720:r=25:d=$DUR -i all_audio.wav -shortest -c:v libx264 -c:a aac output.mp4
+

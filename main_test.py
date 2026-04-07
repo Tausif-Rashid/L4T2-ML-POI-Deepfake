@@ -9,12 +9,12 @@ from config import create_opt
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
 
-def create_model(logger, dir_poi, opt, device):
+def create_model(logger, dir_poi, opt, device, only_audio=True):
     poi_data = {"": dir_poi}
     typ = opt['model']['type']
     if typ == 'poi_forensics':
         from grip_unina.poi_forensics import PoiForensics
-        return PoiForensics(logger, poi_data, opt, device)
+        return PoiForensics(logger, poi_data, opt, device, only_audio=only_audio)
     elif typ == 'id_reveal':
         from grip_unina.id_reveal import IdReveal
         return IdReveal(logger, poi_data, opt, device)
@@ -96,7 +96,7 @@ def main():
         print('Running on device: {}'.format(device))
 
         # compute local scores
-        method = create_model(logger, argd.dir_poi, opt, device=device)
+        method = create_model(logger, argd.dir_poi, opt, device=device, only_audio=argd.modality == 'onlyaudio')
         if argd.modality == 'audiovideo':
             dict_out, info_tracks = method.compute_distance_audiovideo(argd.file_video_input, verbose=argd.verbose)
         elif argd.modality == 'onlyaudio':

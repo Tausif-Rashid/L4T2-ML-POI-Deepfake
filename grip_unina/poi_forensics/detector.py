@@ -16,10 +16,11 @@ from tqdm import tqdm
 from torch import from_numpy as numpy2torch
 
 class PoiForensics:
-    def __init__(self, logger, poi_folders, opt, device):
+    def __init__(self, logger, poi_folders, opt, device, only_audio=True):
         self.logger = logger
         self.opt = opt
         self.list_poi = list(poi_folders.keys())
+        self.only_audio = only_audio
         del opt
 
         for l in yaml.dump(self.opt).splitlines():
@@ -27,7 +28,7 @@ class PoiForensics:
 
         self.device = device
         network_audio, network_video = load_model(self.opt['resources_path'], self.opt['model'], self.device)
-        if network_video is not None:
+        if network_video is not None and not only_audio:
             self.op2 = DetectFace(self.device, os.path.join(self.opt['resources_path'], 'Resnet50_Final.pth'),
                              size_threshold=self.opt['face_det']['size_threshold'], batch_size=self.opt['rec_stride'],
                              score_threshold=self.opt['face_det']['score_threshold'])
@@ -68,7 +69,7 @@ class PoiForensics:
             self.op7_audio = None
             self.logger.info("Only Video Modality")
 
-        if (network_video is not None) and (network_audio is not None):
+        if (network_video is not None and not self.only_audio) and (network_audio is not None):
             align_audiovideo = AlignFacesAudio(image_size=self.opt['model']['face_size'], video_stride=self.opt['model']['clip_video_stride'])
             self.op6_audiovideo = ComputeTemporalMulti(self.opt['model']['clip_length'], self.opt['model']['clip_stride'],
                                             list_elem=align_audiovideo.input_keys(),

@@ -1,4 +1,4 @@
-python main_test.py --file_video_input /home/tr/MEGA/programming2/L4T2/ML_prj_part2_v2/input/test_input1.mp4 --dir_poi /home/tr/MEGA/programming2/L4T2/ML_prj_part2_v2/pois/nicolas-cage/app_poiforensics/ --file_output /home/tr/MEGA/programming2/L4T2/ML_prj_part2_v2/output/test_out.npz --modality onlyaudio --create_plot 1 --create_videoout 1  --gpu -1
+python main_test.py --file_video_input /home/tr/MEGA/programming2/L4T2/ML_prj_part2_v2/input/test_input2.mp4 --dir_poi /home/tr/MEGA/programming2/L4T2/ML_prj_part2_v2/pois/nicolas-cage/app_poiforensics/ --file_output /home/tr/MEGA/programming2/L4T2/ML_prj_part2_v2/output/testV1.npz --modality onlyaudio --create_plot 1 --create_videoout 0  --gpu -1
 
 python main_gen_references.py --dir_videos /home/tr/MEGA/programming2/L4T2/ML_prj_part2_v2/input/sust_ref/ --dir_poi /home/tr/MEGA/programming2/L4T2/ML_prj_part2_v2/pois/sust_s1/
 

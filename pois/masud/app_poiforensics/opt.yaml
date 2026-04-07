@@ -1,0 +1,19 @@
+audio:
+  norm_target_dBFS: -30
+  num_fft: 512
+  sampling_rate: 16000
+  window_length: 25
+  window_step: 10
+fps: 25
+model:
+  architecture_audio: enc_resnet50
+  architecture_video: enc_resnet50
+  clip_length: 75
+  clip_ref_stride: 25
+  clip_stride: 25
+  clip_video_stride: 3
+  face_size: 224
+  factor_len: 1
+  feats_len: 256
+  type: poi_forensics
+  weights: ./weights_audiovideo.th

@@ -1,8 +1,11 @@
 import numpy as np 
  
 # Load embeddings from a .npz file 
-data = np.load('/home/tr/MEGA/programming2/L4T2/ML_prj_part2_v2/pois/nicolas-cage/app_poiforensics/vid__4PKe8WGCPg/embs_track16.npz') 
+# data = np.load('/home/tr/MEGA/programming2/L4T2/ML_prj_part2_v2/pois/nicolas-cage/app_poiforensics/vid__4PKe8WGCPg/embs_track16.npz') 
+data = np.load('/home/tr/MEGA/programming2/L4T2/ML_prj_part2_v2/output/testV1.npz')
 dict_out = dict(data) 
+
+print(dict_out)
  
 # Access specific embeddings 
 audio_embeddings = dict_out['embs_feat_audio']  # Shape: (N, feature_dim) 

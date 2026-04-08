@@ -103,6 +103,8 @@ class PoiForensics:
                                  n_fft=self.opt['audio']['num_fft'],
                                  window_step=self.opt['audio']['window_step'],
                                  window_length=self.opt['audio']['window_length'])
+        print("Audio data in comp dist: ")
+        print(audiodata.shape)
 
         total = len(audiodata) * (self.opt['audio']['window_step']*self.opt['fps']) // 1000
 

@@ -1,4 +1,4 @@
-%%writefile /tmp/script.py
+# %%writefile /tmp/script.py
 import os
 import argparse
 import glob

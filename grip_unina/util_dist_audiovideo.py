@@ -100,6 +100,11 @@ class ComputeDistanceAudioVideo:
                 print('If you want to recompute the statistics, delete the file', file_statistics)
                 self.mu = np.load(file_statistics)['mu']
                 self.sigma = np.load(file_statistics)['sigma']
+                if np.any(np.isnan(self.mu)) or np.any(np.isnan(self.sigma)):
+                    print('Warning: Loaded statistics contain NaN. Overriding to disable normalization.')
+                    dim = len(self.key_feats) + 1 if len(self.key_feats) > 1 else 1
+                    self.mu = np.zeros(dim)
+                    self.sigma = np.ones(dim)
             else:
                 print('Computing statistics on the reference videos .....', flush=True)
                 cum_mean = 0.0
@@ -117,12 +122,24 @@ class ComputeDistanceAudioVideo:
                         cum_mean_vid = cum_mean_vid + np.sum(dist, 0)
                         cum_vqm_vid = cum_vqm_vid + np.sum(dist * dist, 0)
                         cum_dem_vid += len(dist)
-                    cum_mean = cum_mean + (cum_mean_vid / cum_dem_vid)
-                    cum_vqm = cum_vqm + (cum_vqm_vid / cum_dem_vid)
+                    if cum_dem_vid > 0:
+                        cum_mean = cum_mean + (cum_mean_vid / cum_dem_vid)
+                        cum_vqm = cum_vqm + (cum_vqm_vid / cum_dem_vid)
                     cum_dem += 1
 
-                self.mu = cum_mean / cum_dem
-                self.sigma = np.sqrt(cum_vqm / cum_dem - (self.mu ** 2))
+                if cum_dem > 0:
+                    self.mu = cum_mean / cum_dem
+                    self.sigma = np.sqrt(cum_vqm / cum_dem - (self.mu ** 2))
+                else:
+                    self.mu = np.nan
+                    self.sigma = np.nan
+
+                if np.any(np.isnan(self.mu)) or np.any(np.isnan(self.sigma)):
+                    print('Warning: Computed statistics contain NaN (likely due to only 1 reference video). Overriding to disable normalization.')
+                    dim = len(self.key_feats) + 1 if len(self.key_feats) > 1 else 1
+                    self.mu = np.zeros(dim)
+                    self.sigma = np.ones(dim)
+
                 try:
                     np.savez(file_statistics, mu=self.mu, sigma=self.sigma)
                     print('Saving statistics to ', file_statistics)

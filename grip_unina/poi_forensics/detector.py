@@ -78,11 +78,18 @@ class PoiForensics:
         else:
             self.op6_audiovideo = None
 
+        keys_to_use = list()
+        if network_video is not None and not self.only_audio:
+            keys_to_use.append('embs_feat_video')
+        if network_audio is not None:
+            keys_to_use.append('embs_feat_audio')
+        keys_to_use = tuple(keys_to_use)
+
         dict_ops = {_: ComputeDistanceAudioVideo(poi_folders[_],
-                                                 key_feats=('embs_feat_video', 'embs_feat_audio'),
+                                                 key_feats=keys_to_use,
                                                  normalize=self.opt['dist_normalization'])
                     for _ in self.list_poi}
-        self.op9 = ComputeParallelDict(('embs_feat_video', 'embs_feat_audio'), 'embs_dists', dict_ops)
+        self.op9 = ComputeParallelDict(keys_to_use, 'embs_dists', dict_ops)
 
         self.logger.info(f"Created the network on {self.device}")
 

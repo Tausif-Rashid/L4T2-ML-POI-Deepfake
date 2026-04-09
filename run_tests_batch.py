@@ -5,11 +5,11 @@ from pathlib import Path
 
 # Base directories
 base_dir = "/home/tr/MEGA/programming2/L4T2/ML_prj_part2_v2"
-poi_dir = os.path.join(base_dir, "pois/sust/app_poiforensics/")
+poi_dir = os.path.join(base_dir, "pois/agro2/app_poiforensics/")
 test_script = os.path.join(base_dir, "main_test-copy.py")
 
-data_dir = os.path.join(base_dir, "Testing/Sust/data")
-output_dir = os.path.join(base_dir, "Testing/Sust/output")
+data_dir = os.path.join(base_dir, "Testing/yt1/data")
+output_dir = os.path.join(base_dir, "Testing/yt1/output")
 
 # Categories
 categories = ["fake", "real"]

@@ -1,0 +1,19 @@
+Method used: eer
+Learned threshold: -0.5455
+---------------------------------------------------
+Testing on Test Set (Total: 58)
+total samples: 58
+total fake: 29
+total real: 29
+
+Confusion Matrix:
+              | Predicted Fake  | Predicted Real 
+---------------------------------------------------
+Actual Fake   | 17              | 12             
+Actual Real   | 9               | 20             
+---------------------------------------------------
+
+Accuracy: 0.6379
+Precision: 0.6538
+Recall: 0.5862
+F1 score: 0.6182

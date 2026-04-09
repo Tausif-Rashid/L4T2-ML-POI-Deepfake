@@ -1,0 +1,19 @@
+Method used: percentile_90
+Learned threshold: -0.2985
+---------------------------------------------------
+Testing on Test Set (Total: 70)
+total samples: 70
+total fake: 41
+total real: 29
+
+Confusion Matrix:
+              | Predicted Fake  | Predicted Real 
+---------------------------------------------------
+Actual Fake   | 5               | 36             
+Actual Real   | 3               | 26             
+---------------------------------------------------
+
+Accuracy: 0.4429
+Precision: 0.6250
+Recall: 0.1220
+F1 score: 0.2041

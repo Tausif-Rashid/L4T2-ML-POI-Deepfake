@@ -1,0 +1,19 @@
+Method used: f1_optimized
+Calculated threshold: -0.9077
+---------------------------------------------------
+Testing on Test Set (Total: 57)
+total samples: 57
+total fake: 28
+total real: 29
+
+Confusion Matrix:
+              | Predicted Fake  | Predicted Real 
+---------------------------------------------------
+Actual Fake   | 27              | 1              
+Actual Real   | 22              | 7              
+---------------------------------------------------
+
+Accuracy: 0.5965
+Precision: 0.5510
+Recall: 0.9643
+F1 score: 0.7013

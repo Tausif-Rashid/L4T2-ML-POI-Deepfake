@@ -5,7 +5,7 @@ from pathlib import Path
 
 # Base directories
 base_dir = "/home/tr/MEGA/programming2/L4T2/ML_prj_part2_v2"
-poi_dir = os.path.join(base_dir, "pois/mozilla1/app_poiforensics/")
+poi_dir = os.path.join(base_dir, "pois/moz1v2/app_poiforensics/")
 test_script = os.path.join(base_dir, "main_test-copy.py")
 
 data_dir = os.path.join(base_dir, "Testing/Mozilla_s1/data")

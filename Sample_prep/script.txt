@@ -17,3 +17,7 @@ echo $DUR  # Should print a number
 # 4. Create video
 ffmpeg -f lavfi -i color=c=black:s=1280x720:r=25:d=$DUR -i all_audio.wav -shortest -c:v libx264 -c:a aac output.mp4
 
+
+#splitting video into small chunks
+ffmpeg -i input.mp4 -c copy -map 0 -segment_time 00:02:00 -f segment -reset_timestamps 1 part_%03d.mp4
+

@@ -4,9 +4,9 @@ from pathlib import Path
 
 def evaluate():
     base_dir = "/home/tr/MEGA/programming2/L4T2/ML_prj_part2_v2"
-    real_dir = Path(base_dir) / "Testing/Sust/output/real"
-    fake_dir = Path(base_dir) / "Testing/Sust/output/fake"
-    results_file = Path(base_dir) / "Testing/Sust/output/results.txt"
+    real_dir = Path(base_dir) / "Testing/Mozilla_s1/output/real"
+    fake_dir = Path(base_dir) / "Testing/Mozilla_s1/output/fake"
+    results_file = Path(base_dir) / "Testing/Mozilla_s1/output/results-Mozilla_s1.txt"
 
     tp = 0 # True Positives: Ground truth Fake, Predicted Fake
     fn = 0 # False Negatives: Ground truth Fake, Predicted Real
@@ -24,8 +24,8 @@ def evaluate():
                 data = np.load(npz_file)
                 if 'global_score' in data:
                     score = float(data['global_score'])
-                    # score >= 0 means Fake, score < 0 means Real
-                    pred_fake = (score >= 0)
+                    # score >= 0.2 means Fake, score < 0.2 means Real
+                    pred_fake = (score >= 0.2)
                     
                     if is_fake:
                         if pred_fake:

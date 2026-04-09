@@ -1,0 +1,15 @@
+total samples: 80
+total fake: 41
+total real: 39
+
+Confusion Matrix:
+              | Predicted Fake  | Predicted Real 
+---------------------------------------------------
+Actual Fake   | 39              | 2              
+Actual Real   | 30              | 9              
+---------------------------------------------------
+
+Accuracy: 0.6000
+Precision: 0.5652
+Recall: 0.9512
+F1 score: 0.7091

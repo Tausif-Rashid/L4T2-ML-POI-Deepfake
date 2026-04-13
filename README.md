@@ -1,7 +1,8 @@
 # Audio-Only POI-Forensics
 
-This codebase has been modified to focus exclusively on Person-Of-Interest (POI) deepfake detection via **audio modality**. It replaces the multimodal capability, completely omitting visual tasks (like 3DMM tracking and bounding boxes) to strictly assess the biometric validity of a speaker's voice.
-Kaggle Notebook: https://www.kaggle.com/code/tausifr/ml-prj-p2
+This codebase has been modified to focus exclusively on Person-Of-Interest (POI) deepfake detection via **audio modality**. It replaces the multimodal capability, completely omitting visual tasks (like 3DMM tracking and bounding boxes) to strictly assess the biometric validity of a speaker's voice. <br>
+Kaggle Notebook: https://www.kaggle.com/code/tausifr/ml-prj-p2 <br>
+Bengali Deepfake audio generation for testing : https://github.com/ibnul-nabil/CSE472_ML_Project/tree/main 
 
 ### Installation
 1. Install CUDA and FFmpeg on your system.

@@ -1,62 +1,57 @@
-# POI-Forensics
+# Audio-Only POI-Forensics
 
-Test script for Person-Of-Interest (POI) forensics using both audo and video modalities.
-It relies on the biometric characteristics of the POI in order to carry out video detection.
+This codebase has been modified to focus exclusively on Person-Of-Interest (POI) deepfake detection via **audio modality**. It replaces the multimodal capability, completely omitting visual tasks (like 3DMM tracking and bounding boxes) to strictly assess the biometric validity of a speaker's voice.
+Kaggle Notebook: https://www.kaggle.com/code/tausifr/ml-prj-p2
 
 ### Installation
-1.	Install CUDA and FFmpeg with H264 on your system.
-2.  Install Python>=3.7 with PyTorch>=1.7.1, TorchVision>=0.8.2, TorchAudio>=0.7.2 and Pip
-3.	Install Python requirements executing:
-```bash
-    pip install -r ./requirements.txt
-```
-4.	Download and unzip the resources folder (MD5 of zip file: d099ee4bda5b833514214c15469deadc):
+1. Install CUDA and FFmpeg on your system.
+2. Install Python>=3.7 with PyTorch>=1.7.1, TorchVision>=0.8.2, TorchAudio>=0.7.2 and Pip.
+3. Install Python requirements mentioned in installs.txt
+4. Download and unzip the resources folder (MD5 of zip file: d099ee4bda5b833514214c15469deadc):
 ```bash
     wget  https://www.grip.unina.it/download/poiforensics_resources.zip
     unzip poiforensics_resources.zip
 ```
 
-### Test on a provided POI
-In the pois folder, there are already the extracted features for Nicolas Cage.
-To run POI-Forensics [1], execute in a terminal the following command:
+### Scripts & Pipeline Usage
+
+The testing pipeline logic is separated into the following clear phases, handled by dedicated scripts:
+
+#### 1. Generate Voice References (`main_gen_references-copy.py`)
+Extracts fundamental voice embeddings from a collection of authentic reference videos/audios associated with a POI.
+- **Usage:**
 ```bash
 export PYTHONPATH="${PYTHONPATH}:./pythonlib/"
-python main_test.py --file_video_input "${INPUT_VIDEO}" --file_output "${OUPUT_NPZ}" \
-                    --dir_poi "./pois/nicolas-cage/app_poiforensics" --gpu 0 \
-                    --create_plot 1 --create_videoout 1
+python main_gen_references-copy.py --dir_videos "${INPUT_DIR}" --dir_poi "${POI_DIR}" --gpu 0
 ```
+- **Results:** Generates `.npz` feature files spanning the detected audio track for each file inside the requested `${POI_DIR}`. *(Note: `main_feat_extractor-copy.py` acts as an underlying tool specifically invoked by the references engine to decouple audio spectogram loading logic from video/frame mechanisms).*
 
-where INPUT_VIDEO is the video to analyze, OUPUT_NPZ is the numpy file with results.
-About other parameters:
-- '--dir_poi' is features directory of POI.
-- '--gpu' identifies the GPU to be used, set it to -1 if you do not want to use GPUs.
-- '--create_plot' can be 0 or 1. If it is equal to 1, a png file that contains a plot of the results is created and saved in the same location of the numpy file.
-- '--create_videoout' can be 0 or 1. If it is equal to 1, a video file with local scores is generated and saved in the same location of the numpy file.
-- '--dist_normalization' can be 0 or 1. If it is equal to 1, the output distances are normalized using on the values obtained on pristine videos.
-
-To run ID-Reveal [2], execute in a terminal the following command:
+#### 2. Single Target Testing (`main_test-copy.py`)
+Computes similarity distances and a deepfake global score for a single input audio/video file when compared against the POI reference embeddings.
+- **Usage:**
 ```bash
 export PYTHONPATH="${PYTHONPATH}:./pythonlib/"
-python main_test.py --file_video_input "${INPUT_VIDEO}" --file_output "${OUPUT_NPZ}" \
-                    --dir_poi "./poi/nicolas-cage/app_idreveal" --gpu 0 \
-                    --create_plot 1 --create_videoout 1
+python main_test-copy.py --file_video_input "${INPUT_AUDIO}" --dir_poi "${POI_DIR}" \
+                         --file_output "${OUTPUT_NPZ}" --modality onlyaudio \
+                         --create_plot 1 --gpu 0
 ```
+- **Results:** Outputs an `.npz` array file with `global_score` and distance sequences. The flag `--create_plot 1` drops a qualitative chart (PNG) plotting similarity distances into the same folder.
 
+#### 3. Automated Batch Testing (`run_tests_batch.py`)
+Sequentially runs testing across an entire dataset composed of `.wav` files (segregated by `fake/` and `real/`).
+- **Usage:** Verify inline paths, then execute `python run_tests_batch.py` directly.
+- **Results:** Iteratively parses every record and aggregates their respective `.npz` and `.png` outputs into the specified testing output directories.
 
-### Adding other POIs
-Starting from a set of POI reference videos included in the folder INPUT_DIR, execute in a terminal:
-```bash
-export PYTHONPATH="${PYTHONPATH}:./pythonlib/"
-python main_gen_references.py --dir_videos "${INPUT_DIR}" --dir_poi "${POI_DIR}" --gpu 0
-```
-where POI_DIR is the output directory. This function does the following: for each video it performs face detection (using RetinaFace) and face tracking and then for each track it computes the features.
-For each reference video with filename "{videoname}.mp4", the script generates in the output directory:
-1.	a video with the tracking indices with filename "track/track_{videoname}.mp4".
-2.	an extracted face for each track with filename "faces/{videoname}/track_{n}.png", where n is the index of track.
-3.	numpy files with the POI-Forensics features. In detail, a file is created for each detected track with filename "app_poiforensics/{videoname}/embs_track{n}.npz", where n is the index of track.
-4.  numpy files with the ID-Reveal features. In detail, a file is created for each detected track with filename "app_idreveal/{videoname}/embs_track{n}.npz", where n is the index of track.
+#### 4. Threshold Calibration & Dynamic Prediction (`make_prediction.py`)
+Dynamically learns an optimal authentication threshold by assessing a subset of the dataset's `global_score` distributions (e.g., F1 Optimizing, 90th percentile of True Reals, or Equal Error Rate), applying it universally against test sections.
+- **Usage:** Customize directories and threshold technique (e.g. `method = 'f1_optimized'`) in the file, then run `python make_prediction.py`.
+- **Results:** Prints confusion matrices with Precision, Accuracy, Recall, and F1. Bundles tests into `results_prediction-{method}.txt` and groups all evaluated dataset scores into an `all_scores_dataset.csv`.
 
-Before executing the test, the generated directory should be cleaned deleting the files relative to tracks that are not of the POI.
+#### 5. Fixed Set Evaluation (`evaluate_results.py`)
+Executes a quick check iteratively predicting outcomes using a hard-coded strict threshold rating (standardized predominantly at `score >= 0.2` implies fake).
+- **Usage:** Adjust inline paths, then run `python evaluate_results.py`.
+- **Results:** Asserts true/false metrics directly dumping findings to a formatted `.txt` report.
+
 
 ### License
 Copyright (c) 2023 Image Processing Research Group of University Federico II of Naples ('GRIP-UNINA').

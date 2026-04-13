@@ -1,0 +1,18 @@
+pip install PyYAML>=5.1
+pip install pillow>=7.2.0
+pip install librosa==0.9.2
+pip install segmentation-models-pytorch==0.2.1
+pip install pydub==0.25.1
+pip install scikit-image==0.17.2
+pip install scikit-video==1.1.11
+pip install efficientnet-pytorch==0.6.3
+pip install albumentations==0.4.5
+pip install opencv-python-headless==4.5.3.56
+pip install tqdm==4.46.0
+pip install numpy==1.22
+pip install --upgrade typing_extensions
+pip install tensorflow==2.5.0
+pip install retinaface
+
+pip install --upgrade typing_extensions
+pip install numpy==1.22
